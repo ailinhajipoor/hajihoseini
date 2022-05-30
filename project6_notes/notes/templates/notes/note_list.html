@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p> notes :</p>
+
+    {% for i in note %}
+        <H1> {{ i.author}} </H1>
+        <p>{{ i.text }}</p>
+        <br>
+        <hr>
+        <br>
+    {% endfor %}
+
+</body>
+</html>

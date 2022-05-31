@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home page</title>
+</head>
+<body>
+    <a href="#">home</a>
+    <a href="#">names</a>
+    <a href="#">phone</a>
+<br>
+        {% for i in data %}
+            <div  style="background-color: #cdcbcb ;display: inline-block ;width: 30%;
+                border-radius: 5px;margin-top: 50px;
+                 padding: 60px;line-height: 1.2cm;box-sizing: border-box">
+
+                <label><b>Id : </b></label> <label>{{ i.id }}</label>
+                <br>
+                 <label><b>Name :</b> </label> <label>{{ i.name }}</label>
+                <br>
+                 <label><b>Lastname : </b></label> <label>{{ i.last_name }}</label>
+                <br>
+                 <label><b>Phone number  : </b></label> <label>{{ i.phone_number }}</label>
+            </div>
+
+        {% endfor %}
+{% block content %}
+{% endblock content %}
+
+</body>
+</html>

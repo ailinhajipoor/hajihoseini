@@ -1,7 +1,9 @@
 {% extends '_base.html' %}
 
 
-{% for i in data %}
+{% block content %}
+    {% for i in data %}
     <p>{{ i.name }}</p>
 
-{% endfor %}
+    {% endfor %}
+{% endblock %}

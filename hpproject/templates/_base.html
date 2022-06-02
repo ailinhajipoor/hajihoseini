@@ -5,9 +5,9 @@
     <title>Home page</title>
 </head>
 <body>
-    <a href="#">home</a>
-    <a href="#">names</a>
-    <a href="#">phone</a>
+    <a href="{% url 'people_home' %}">home</a>
+    <a href="{% url 'people_name' %}">names</a>
+    <a href="{% url 'people_phone' %}">phone</a>
 <br>
         {% for i in data %}
             <div  style="background-color: #cdcbcb ;display: inline-block ;width: 30%;

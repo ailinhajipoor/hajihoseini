@@ -13,3 +13,5 @@ def notes_list_views(request):
         'note': note
     }
     return render(request, template_name='notes/note_list.html', context=context)
+
+

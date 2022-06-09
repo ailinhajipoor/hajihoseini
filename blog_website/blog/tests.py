@@ -6,14 +6,24 @@ from django.shortcuts import reverse
 
 # Create your tests here.
 class BlogPostTest(TestCase):
-    def setUp(self):
-        self.user = User.objects.create(username="ailin")
-        self.post = Post.objects.create(
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create(username="ailin")
+        cls.post = Post.objects.create(
             title="Post1",
             text="this is the description of post 1",
-            status=Post.STATUS_CHOICES[0],
-            author=self.user,
+            status=Post.STATUS_CHOICES[0][0],
+            author=cls.user,
         )
+        cls.post2 = Post.objects.create(
+            title="Post2",
+            text="A draft post",
+            status=Post.STATUS_CHOICES[1][0],
+            author=cls.user,
+        )
+
+    # def setUp(self):
+
 
     def test_post_list_url(self):
         response = self.client.get('/blog/')
@@ -47,5 +57,10 @@ class BlogPostTest(TestCase):
         self.assertContains(response, self.post.text)
 
     def test_status_404_if_post_id_exist(self):
-        response = self.client.get(reverse('posts_detail', args=[2]))
+        response = self.client.get(reverse('posts_detail', args=[200]))
         self.assertEqual(response.status_code, 404)
+
+    def test_draft_post_not_show_in_posts_list(self):
+        response = self.client.get(reverse('posts_list'))
+        self.assertContains(response, self.post.title)
+        self.assertNotContains(response, self.post2.title)

@@ -4,6 +4,7 @@ from .models import Post
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
+from .forms import NewPostForm
 
 
 # Create your views here.
@@ -30,19 +31,25 @@ def post_detail_view(request, pk):
 
 
 def post_create_view(request):
-    # print(request.POST)
-    # print(request.POST.get('form-check-input'))
+    # # print(request.POST)
+    # # print(request.POST.get('form-check-input'))
+    # if request.method == "POST":
+    #     post_title = request.POST.get('title')
+    #     post_text = request.POST.get('text')
+    #     post_status = request.POST.get('status')
+    #     print(post_title)
+    #     user = User.objects.all()[0]
+    #     if post_status == "on":
+    #         st = "pub"
+    #     else:
+    #         st = "drf"
+    #     Post.objects.create(title=post_title, text=post_text, author=user, status=st)
+    # else:
+    #     print("get request !")
+    # return render(request, 'blog/post_create.html')
     if request.method == "POST":
-        post_title = request.POST.get('title')
-        post_text = request.POST.get('text')
-        post_status = request.POST.get('status')
-        print(post_title)
-        user = User.objects.all()[0]
-        if post_status == "on":
-            st = "pub"
-        else:
-            st = "drf"
-        Post.objects.create(title=post_title, text=post_text, author=user, status=st)
-    else:
-        print("get request !")
-    return render(request, 'blog/post_create.html')
+      print("DJFKED")
+    else:  # get request
+        form = NewPostForm()
+        print("drlkgj")
+    return render(request, 'blog/post_create.html', context={"form": form})

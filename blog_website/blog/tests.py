@@ -23,7 +23,12 @@ class BlogPostTest(TestCase):
         )
 
     # def setUp(self):
+    def test_post_model_str(self):
+        post = self.post
+        self.assertEqual(str(post), post.title)
 
+    def test_post_detail(self):
+        self.assertEqual(self.post.title, "Post1")
 
     def test_post_list_url(self):
         response = self.client.get('/blog/')
@@ -64,3 +69,34 @@ class BlogPostTest(TestCase):
         response = self.client.get(reverse('posts_list'))
         self.assertContains(response, self.post.title)
         self.assertNotContains(response, self.post2.title)
+
+    def test_post_create_view(self):
+        response = self.client.post(reverse('post_create'), {
+            "title": "some post2 title",
+            "text": "post2 updated",
+            "author": self.post2.author.id,
+            "status": "pub",
+        })
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Post.objects.last().title, "some post2 title")
+        self.assertEqual(Post.objects.last().text, "post2 updated")
+        self.assertEqual(Post.objects.last().author, self.user)
+        self.assertEqual(Post.objects.last().status, "pub")
+
+    def test_post_update_view(self):
+        temp_user = User.objects.create(username="ali")
+        response = self.client.post(reverse('post_update', args=[self.post2.id]), {
+            'title': 'post1 updated',
+            'text': "this text is updated",
+            'author': temp_user.id,
+            'status': "drf"
+        })
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Post.objects.last().title, "post1 updated")
+        self.assertEqual(Post.objects.last().text, "this text is updated")
+        self.assertEqual(Post.objects.last().author, temp_user)
+        self.assertEqual(Post.objects.last().status, "drf")
+
+    def test_post_delete_view(self):
+        response = self.client.post(reverse('post_delete', args=[self.post2.id]))
+        self.assertEqual(response.status_code, 302)

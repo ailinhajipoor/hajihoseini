@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect, reverse
 from .models import Post
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import get_object_or_404
@@ -11,7 +11,7 @@ from .forms import NewPostForm
 
 def post_list_view(request):
     # posts_list = Post.objects.all()
-    posts_list = Post.objects.filter(status='pub')
+    posts_list = Post.objects.filter(status='pub').order_by("-date_modified")
 
     return render(request, 'blog/posts_list.html', {'posts_list': posts_list})
 
@@ -48,8 +48,34 @@ def post_create_view(request):
     #     print("get request !")
     # return render(request, 'blog/post_create.html')
     if request.method == "POST":
-      print("DJFKED")
+        form = NewPostForm(request.POST)
+        if form.is_valid():
+            form.save()
+            # form = NewPostForm()
+            return redirect('posts_list')
     else:  # get request
         form = NewPostForm()
-        print("drlkgj")
+
     return render(request, 'blog/post_create.html', context={"form": form})
+
+
+def post_update_view(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    form = NewPostForm(request.POST or None, instance=post)
+    if form.is_valid():
+        form.save()
+
+        return redirect('posts_list')
+    else:
+        print("bye")
+
+    return render(request, 'blog/post_update.html', context={"form": form, "post": post})
+
+
+def post_delete_view(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.method == "POST":
+        post.delete()
+        return redirect('posts_list')
+
+    return render(request, 'blog/post_delete.html', context={"post": post})

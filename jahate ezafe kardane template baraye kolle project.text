@@ -1,0 +1,5 @@
+jahate ezafe kardane template baraye kolle project:
+ezafe kardan addres e template e base e HTML dar seetings.py
+'DIRS': [
+            str(BASE_DIR.joinpath('templates')),
+        ],
